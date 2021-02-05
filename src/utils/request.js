@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import axios from 'axios'
-import { ACCESS_TOKEN } from '@/store/mutation-types'
+import { ACCESS_TOKEN, AUHTORIZATION } from '@/store/mutation-types'
 
 const service = axios.create({
   baseURL: process.env.VUE_APP_API_BASE_URL,
@@ -8,15 +8,6 @@ const service = axios.create({
 })
 
 const err = error => {
-  const { response } = error
-  if (response) {
-    const { data, status } = error.response
-    switch (status) {
-      default:
-        break
-    }
-  }
-
   return Promise.reject(error)
 }
 
@@ -24,7 +15,7 @@ service.interceptors.request.use(
   config => {
     const token = Vue.ls.get(ACCESS_TOKEN)
     if (token) {
-      config.headers['AUTH-TOKEN'] = token
+      config.headers[AUHTORIZATION] = token
     }
     return config
   },
@@ -34,7 +25,8 @@ service.interceptors.request.use(
 )
 
 service.interceptors.response.use(response => {
-  return response.data
+  const { code, data } = response
+  return code < 300 ? data : err({ response })
 }, err)
 
 export default service
