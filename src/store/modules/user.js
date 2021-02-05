@@ -1,12 +1,11 @@
 import Vue from 'vue'
-import { login } from '@/api/auth'
 import { ACCESS_TOKEN } from '@/store/mutation-types'
 
 const state = {
   token: '',
   id: '',
   name: '',
-  avatar: '',
+  avatar: ''
 }
 
 const mutations = {
@@ -27,13 +26,11 @@ const mutations = {
 const actions = {
   Login({ commit }, userInfo) {
     return new Promise((resolve, reject) => {
-      login().then(res => { }).catch(error => {
-        reject(error)
-      })
+      resolve()
     })
   },
 
-  GetInfo({ commit }) { },
+  GetInfo({ commit }) {},
 
   Logout({ commit }) {
     return new Promise(resolve => {

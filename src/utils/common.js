@@ -16,5 +16,4 @@ export const count = (time, second = DEFAULT_SECOND) => {
       window.clearInterval(interval)
     }
   }, 1000)
-
 }
