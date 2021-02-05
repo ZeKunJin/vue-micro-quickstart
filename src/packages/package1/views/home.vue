@@ -3,6 +3,8 @@
     package1 home page<br />
     count: {{ store.state.count }}<br />
     <button @click="store.mutations.ADD_COUNT()">+</button>
+
+    <img src="../assets/logo.png" alt="" />
   </div>
 </template>
 

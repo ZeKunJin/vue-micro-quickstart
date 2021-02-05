@@ -1,4 +1,7 @@
-import './router'
+import router from './router'
+import filters from './filters'
+
 import './permission'
-import './filters'
 import './use'
+
+export { router, filters }
