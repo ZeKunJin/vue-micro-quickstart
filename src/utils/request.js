@@ -25,8 +25,7 @@ service.interceptors.request.use(
 )
 
 service.interceptors.response.use(response => {
-  const { code, data } = response
-  return code < 300 ? data : err({ response })
+  return response.data
 }, err)
 
 export default service
