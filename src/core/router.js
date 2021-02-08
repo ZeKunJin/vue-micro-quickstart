@@ -3,9 +3,25 @@ import VueRouter from 'vue-router'
 
 Vue.use(VueRouter)
 
-const DEFAULT_BEFORE_ENTER = (to, from, next) => {
-  next()
+class CustomVueRouter extends VueRouter {
+  constructor(routerConfig) {
+    super(routerConfig)
+  }
+
+  override(method, { PACKAGE }) {
+    const _this = this
+    const _super = super[method]
+    this[PACKAGE] = {
+      [method](location, onComplete, onAbort) {
+        const { name } = location
+        location.name = PACKAGE ? `${PACKAGE}-${name}` : name
+        _super.bind(_this)(location, onComplete, onAbort)
+      }
+    }
+  }
 }
+
+const _packageConfigArray = []
 
 const getPackageConfig = path => {
   const _dirArray = path.split('/')
@@ -18,7 +34,7 @@ const getPackageConfig = path => {
   }
 }
 
-const getPackageRoutes = (tree, { PATH = '', PACKAGE = '', BEFORE_ENTER = DEFAULT_BEFORE_ENTER } = {}) => {
+const getPackageRoutes = (tree, { PATH = '', PACKAGE = '', BEFORE_ENTER = undefined } = {}) => {
   const _result = tree.map(item => {
     const { path, name } = item
     const _path = PATH ? `/${PATH}${path}` : path
@@ -33,14 +49,19 @@ const modulesFiles = require.context('@/packages', true, /\.routes\.js$/)
 const modules = modulesFiles.keys().reduce((modules, modulePath) => {
   const _moduleValue = modulesFiles(modulePath).default
   const _packageConfig = getPackageConfig(modulePath)
+  _packageConfigArray.push(_packageConfig)
   modules = [...modules, ...getPackageRoutes(_moduleValue, _packageConfig)]
   return modules
 }, [])
 
-const router = new VueRouter({
+const router = new CustomVueRouter({
   mode: 'history',
   base: process.env.BASE_URL,
   routes: [...modules]
+})
+
+_packageConfigArray.forEach(element => {
+  router.override('push', element)
 })
 
 export default router

@@ -1,9 +1,9 @@
 const assetsCDN = {
   externals: {
-    'vue': 'Vue',
+    vue: 'Vue',
     'vue-router': 'VueRouter',
-    'vuex': 'Vuex',
-    'axios': 'axios'
+    vuex: 'Vuex',
+    axios: 'axios'
   },
   css: [],
   js: []

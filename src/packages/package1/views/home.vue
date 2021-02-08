@@ -1,10 +1,13 @@
 <template>
   <div class="package1-index-layout">
-    package1 home page<br />
-    count: {{ store.state.count }}<br />
-    <button @click="store.mutations.ADD_COUNT()">+</button>
-    <button @click="login">login</button>
-    <button @click="getUserInfo">get user info</button>
+    <div>
+      package1 home page<br />
+      count: {{ store.state.count }}<br />
+      <button @click="store.mutations.ADD_COUNT()">state +</button>
+      <button @click="login">login</button>
+      <button @click="getUserInfo">get user info</button>
+      <button @click="handleNavi">navi</button>
+    </div>
 
     <img src="../assets/logo.png" alt="" />
   </div>
@@ -33,6 +36,10 @@ export default {
 
     getUserInfo() {
       this.GetInfo()
+    },
+
+    handleNavi() {
+      this.$router.package2.push({ name: 'index' })
     }
   }
 }
@@ -40,6 +47,7 @@ export default {
 
 <style lang="less" scoped>
 .package1-index-layout {
-  font-size: 24px;
+  text-align: center;
+  padding: 24px 0;
 }
 </style>
