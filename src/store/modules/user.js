@@ -48,7 +48,7 @@ const actions = {
           const { id, username: name } = data
           commit('SET_ID', id)
           commit('SET_NAME', name)
-          resolve()
+          resolve(data)
         })
         .catch(error => {
           reject(error)

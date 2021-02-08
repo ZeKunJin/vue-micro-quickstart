@@ -10,6 +10,8 @@
     </div>
 
     <img src="../assets/logo.png" alt="" />
+
+    <div>{{ userInfo }}</div>
   </div>
 </template>
 
@@ -20,6 +22,7 @@ import store from '../store'
 export default {
   data() {
     return {
+      userInfo: {},
       store
     }
   },
@@ -35,7 +38,9 @@ export default {
     },
 
     getUserInfo() {
-      this.GetInfo()
+      this.GetInfo().then(res => {
+        this.userInfo = res
+      })
     },
 
     handleNavi() {
