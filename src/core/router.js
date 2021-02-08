@@ -6,10 +6,11 @@ Vue.use(VueRouter)
 const getPackageConfig = path => {
   const _dirArray = path.split('/')
   const [_packageDir] = _dirArray.slice(1, 2)
+  const _defaultConfig = { PACKAGE: _packageDir, PATH: _packageDir }
   try {
-    return require(`@/packages/${_packageDir}/package.config`)
+    return require(`@/packages/${_packageDir}/package.config`) || _defaultConfig
   } catch (error) {
-    return { PACKAGE: _packageDir, PATH: _packageDir }
+    return _defaultConfig
   }
 }
 
