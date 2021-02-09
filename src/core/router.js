@@ -34,14 +34,20 @@ const getPackageConfig = path => {
   }
 }
 
-const getPackageRoutes = (tree, { PATH = '', PACKAGE = '', BEFORE_ENTER = undefined } = {}) => {
+const getPackageRoutes = (tree, config = {}, isChildren = false) => {
+  const { PATH = '', PACKAGE = '', BEFORE_ENTER = undefined } = config
   const _result = tree.map(item => {
-    const { path, name } = item
-    const _path = PATH ? `/${PATH}${path}` : path
-    const _name = PACKAGE ? `${PACKAGE}-${name}` : name
-    const _beforeEnter = BEFORE_ENTER
-    return { ...item, path: _path, name: _name, beforeEnter: _beforeEnter }
+    const name = PACKAGE ? `${PACKAGE}-${item.name}` : item.name
+    const path = PATH && !isChildren ? `/${PATH}${item.path}` : item.path
+    const beforeEnter = !isChildren ? BEFORE_ENTER : undefined
+
+    if (item.children && item.children.length > 0) {
+      item.children = getPackageRoutes(item.children, config, true)
+    }
+
+    return { ...item, path, name, beforeEnter }
   })
+
   return _result
 }
 
@@ -59,6 +65,8 @@ const router = new CustomVueRouter({
   base: process.env.BASE_URL,
   routes: [...modules]
 })
+
+console.log(modules)
 
 _packageConfigArray.forEach(element => {
   router.override('push', element)

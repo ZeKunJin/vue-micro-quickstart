@@ -1,8 +1,17 @@
+import { BasicLayout } from '@/layouts'
+
 const routes = [
   {
     path: '/',
     name: 'index',
-    component: () => import('../views/home')
+    component: BasicLayout,
+    children: [
+      {
+        path: 'info',
+        name: 'info',
+        component: () => import('../views/home')
+      }
+    ]
   }
 ]
 
